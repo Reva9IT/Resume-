@@ -49,11 +49,11 @@ def create_pdf(data):
     c.drawString(50, y, data["name"])
     y -= 20
 
-    c.setFont("Helvetica", 10)
-    c.drawString(50, y, f"Email: {data['email']} | Phone: {data['phone']}")
-    y -= 15
-    c.drawString(50, y, f"Links: {data['links']}")
-    y -= 25
+    #c.setFont("Helvetica", 10)
+    #c.drawString(50, y, f"Email: {data['email']} | Phone: {data['phone']}")
+    #y -= 15
+    #c.drawString(50, y, f"Links: {data['links']}")
+    #y -= 25
 
     c.setFont("Helvetica", 12)
 
