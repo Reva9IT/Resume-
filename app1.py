@@ -1,82 +1,55 @@
-from flask import Flask, request, jsonify
+import streamlit as st
 from resume_generator import create_docx, create_pdf
-import requests
 
-app = Flask(__name__)
+st.set_page_config(page_title="AI Resume Builder", layout="centered")
 
+st.title("📄 AI Resume Builder")
 
-def generate_with_ollama(prompt):
-    url = "http://localhost:11434/api/generate"
+st.write("Fill in your details and generate your resume.")
 
-    data = {
-        "model": "tinyllama",
-        "prompt": prompt,
-        "stream": False
-    }
+# --- USER INPUT ---
+name = st.text_input("Full Name")
+email = st.text_input("Email")
+phone = st.text_input("Phone Number")
+skills = st.text_area("Skills (comma separated)")
+education = st.text_area("Education")
+experience = st.text_area("Experience")
 
-    response = requests.post(url, json=data)
-    return response.json()["response"]
+# --- GENERATE BUTTON ---
+if st.button("Generate Resume"):
+    if not name:
+        st.error("Name is required")
+    else:
+        data = {
+            "name": name,
+            "email": email,
+            "phone": phone,
+            "skills": skills,
+            "education": education,
+            "experience": experience,
+        }
 
+        try:
+            # Generate files
+            docx_file = create_docx(data)
+            pdf_file = create_pdf(data)
 
-@app.route("/")
-def home():
-    return "Backend with LLM is running!"
+            # Download buttons
+            with open(docx_file, "rb") as f:
+                st.download_button(
+                    "Download DOCX",
+                    f,
+                    file_name="resume.docx"
+                )
 
+            with open(pdf_file, "rb") as f:
+                st.download_button(
+                    "Download PDF",
+                    f,
+                    file_name="resume.pdf"
+                )
 
-@app.route("/generate-resume", methods=["POST"])
-def generate_resume():
-    data = request.get_json()
+            st.success("Resume generated successfully!")
 
-    name = data.get("name", "")
-    email = data.get("email", "")
-    phone = data.get("phone", "")
-    links = data.get("links", "")
-    education = data.get("education", "")
-    skills = data.get("skills", "")
-    projects = data.get("projects", "")
-    experience = data.get("experience", "")
-    achievements = data.get("achievements", "")
-    role = data.get("role", "")
-
-    prompt = f"""
-    You are a professional resume writer.
-
-    Write a short professional summary.
-
-    Skills: {skills}
-    Projects: {projects}
-    Experience: {experience}
-    Role: {role}
-
-    Keep it concise and ATS-friendly.
-    """
-
-    summary = generate_with_ollama(prompt)
-
-    resume_data = {
-        "name": name,
-        "email": email,
-        "phone": phone,
-        "links": links,
-        "education": education,
-        "skills": skills,
-        "projects": projects,
-        "experience": experience,
-        "achievements": achievements,
-        "role": role,
-        "summary": summary
-    }
-
-    docx_file = create_docx(resume_data)
-    pdf_file = create_pdf(resume_data)
-
-    return jsonify({
-        "message": "Resume created successfully",
-        "preview": summary,
-        "docx": docx_file,
-        "pdf": pdf_file
-    })
-
-
-#if __name__ == "__main__":
-   # app.run(debug=True)
+        except Exception as e:
+            st.error(f"Error: {str(e)}")
