@@ -8,11 +8,11 @@ def create_docx(data):
 
     doc.add_heading(data["name"], 0)
 
-    doc.add_paragraph(f"Email: {data['email']} | Phone: {data['phone']}")
-    doc.add_paragraph(f"Links: {data['links']}")
+    #doc.add_paragraph(f"Email: {data['email']} | Phone: {data['phone']}")
+    #doc.add_paragraph(f"Links: {data['links']}")
 
-    doc.add_heading("Target Role", level=1)
-    doc.add_paragraph(data["role"])
+    #doc.add_heading("Target Role", level=1)
+    #doc.add_paragraph(data["role"])
 
     doc.add_heading("Education", level=1)
     doc.add_paragraph(data["education"])
@@ -21,15 +21,15 @@ def create_docx(data):
     for skill in data["skills"].split(","):
         doc.add_paragraph(skill.strip(), style='List Bullet')
 
-    doc.add_heading("Projects", level=1)
-    for project in data["projects"].split(","):
-        doc.add_paragraph(project.strip(), style='List Bullet')
+    #doc.add_heading("Projects", level=1)
+    #for project in data["projects"].split(","):
+       # doc.add_paragraph(project.strip(), style='List Bullet')
 
     doc.add_heading("Experience", level=1)
     doc.add_paragraph(data["experience"])
 
-    doc.add_heading("Achievements", level=1)
-    doc.add_paragraph(data["achievements"])
+    #doc.add_heading("Achievements", level=1)
+    #doc.add_paragraph(data["achievements"])
 
     doc.add_heading("Summary", level=1)
     doc.add_paragraph(data["summary"])
@@ -58,12 +58,12 @@ def create_pdf(data):
     c.setFont("Helvetica", 12)
 
     sections = [
-        ("Role", data["role"]),
+        #("Role", data["role"]),
         ("Education", data["education"]),
         ("Skills", data["skills"]),
-        ("Projects", data["projects"]),
+        #("Projects", data["projects"]),
         ("Experience", data["experience"]),
-        ("Achievements", data["achievements"]),
+        #("Achievements", data["achievements"]),
         ("Summary", data["summary"]),
     ]
 
