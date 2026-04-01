@@ -31,8 +31,8 @@ def create_docx(data):
     #doc.add_heading("Achievements", level=1)
     #doc.add_paragraph(data["achievements"])
 
-    doc.add_heading("Summary", level=1)
-    doc.add_paragraph(data["summary"])
+    #doc.add_heading("Summary", level=1)
+    #doc.add_paragraph(data["summary"])
 
     file_path = "resume.docx"
     doc.save(file_path)
@@ -64,7 +64,7 @@ def create_pdf(data):
         #("Projects", data["projects"]),
         ("Experience", data["experience"]),
         #("Achievements", data["achievements"]),
-        ("Summary", data["summary"]),
+        #("Summary", data["summary"]),
     ]
 
     for title, content in sections:
